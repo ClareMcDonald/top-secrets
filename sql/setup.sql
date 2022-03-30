@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS secret CASCADE;
 
 CREATE TABLE users (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    username TEXT NOT NULL,
+    email TEXT NOT NULL,
     password_hash TEXT NOT NULL
 );
 
