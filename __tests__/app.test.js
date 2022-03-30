@@ -13,9 +13,10 @@ describe('top-secrets routes', () => {
   });
 
   it('signs up a user with a POST', async () => {
+    const newUser = { email: 'clare@gmail.com', password: 'secretpassword' };
     const res = await request(app)
       .post('/api/v1/users')
-      .send({ email: 'clare@gmail.com', password: 'secretpassword' });
+      .send(newUser);
     
     expect(res.body).toEqual({ id: expect.any(String), email: 'clare@gmail.com' });
   });
