@@ -45,9 +45,9 @@ describe('top-secrets routes', () => {
       .send(userData);
     
     const res = await agent
-      .delete('/api/v1/users/session')
+      .delete('/api/v1/users/sessions')
       .send(userData);
     
-    expect(res.body).toEqual({ message: 'Successfully signed out!' });
+    expect(res.body).toEqual({ success: true, message: 'Successfully signed out!' });
   });
 });
