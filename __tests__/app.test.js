@@ -52,8 +52,6 @@ describe('top-secrets routes', () => {
   });
 
   it('gets a list of secrets for signed in users', async () => {
-    const userData = { email: 'clare@gmail.com', password: 'secretpassword' };
-
     const agent = request.agent(app);
     await agent
       .post('/api/v1/users')
@@ -68,5 +66,23 @@ describe('top-secrets routes', () => {
     
     expect(res.body).toEqual([{ createdAt: expect.any(String), description: 'Tilly is great!', title: 'urgent secret', id: expect.any(String) }]);
 
+  });
+
+  it('logged in users can create a secret', async () => {
+    const agent = request.agent(app);
+    await agent
+      .post('/api/v1/users')
+      .send({ email: 'clare@gmail.com', password: 'secretpassword' });
+    
+    await agent
+      .post('/api/v1/users/sessions')
+      .send({ email: 'clare@gmail.com', password: 'secretpassword' });
+    
+    const newSecret = { description: 'I wanna rock and roll all night and party every day.', title: 'a brand new secret' };
+    const res = await agent
+      .post('/api/v1/secrets')
+      .send(newSecret);
+    
+    expect.any(res.body).toEqual({ createdAt: expect.any(String), ...newSecret, id: expect.any(String) });
   });
 });
