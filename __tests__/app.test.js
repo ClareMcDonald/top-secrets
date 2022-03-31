@@ -50,4 +50,23 @@ describe('top-secrets routes', () => {
     
     expect(res.body).toEqual({ success: true, message: 'Successfully signed out!' });
   });
+
+  it('gets a list of secrets for signed in users', async () => {
+    const userData = { email: 'clare@gmail.com', password: 'secretpassword' };
+
+    const agent = request.agent(app);
+    await agent
+      .post('/api/v1/users')
+      .send({ email: 'clare@gmail.com', password: 'secretpassword' });
+    
+    await agent
+      .post('/api/v1/users/sessions')
+      .send({ email: 'clare@gmail.com', password: 'secretpassword' });
+    
+    const res = await agent
+      .get('/api/v1/secrets');
+    
+    expect(res.body).toEqual([{ createdAt: expect.any(String), description: 'Tilly is great!', title: 'urgent secret', id: expect.any(String) }]);
+
+  });
 });
